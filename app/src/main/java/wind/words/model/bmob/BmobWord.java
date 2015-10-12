@@ -12,7 +12,6 @@ public class BmobWord extends BmobObject {
     private String by;
 
     public BmobWord(String word, String by) {
-        super();
         this.word = word;
         this.by = by;
     }

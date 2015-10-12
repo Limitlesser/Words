@@ -10,6 +10,12 @@ import wind.words.model.data.Word;
  */
 public interface Api {
 
+    interface Callback<T> {
+        void onSuccess(T t);
+
+        void onError(ApiError e);
+    }
+
     Observable<List<Word>> listWords();
 
     Observable<Word> postWord(String word, String by);

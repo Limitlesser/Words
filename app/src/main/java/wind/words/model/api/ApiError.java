@@ -23,4 +23,12 @@ public class ApiError extends Throwable {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
+
+    @Override
+    public String toString() {
+        return "ApiError{" +
+                "errCode=" + errCode +
+                ", errMsg='" + errMsg + '\'' +
+                '}';
+    }
 }

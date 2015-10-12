@@ -3,8 +3,10 @@ package wind.words.model.data;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import java.util.Date;
+import java.util.List;
 
 import wind.words.model.bmob.BmobWord;
 
@@ -15,13 +17,13 @@ import wind.words.model.bmob.BmobWord;
 public class Word extends Model {
 
     public static final String TABLE_NAME = "words";
-    public static final String COL_ID = "id";
+    public static final String COL_ID = "_id";
     public static final String COL_WORD = "word";
     public static final String COL_BY = "by";
     public static final String COL_CREATE_AT = "create_at";
     public static final String COL_UPDATE_AT = "update_at";
 
-    @Column(name = COL_ID)
+    @Column(name = COL_ID, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     public String id;
 
     @Column(name = COL_WORD)
@@ -36,6 +38,10 @@ public class Word extends Model {
     @Column(name = COL_UPDATE_AT)
     public String updateAt;
 
+    public Word() {
+
+    }
+
     public Word(BmobWord bmobWord) {
         id = bmobWord.getObjectId();
         word = bmobWord.getWord();
@@ -45,10 +51,21 @@ public class Word extends Model {
     }
 
     public BmobWord toBmobWord() {
-        BmobWord bmobWord = new BmobWord();
-        bmobWord.setWord(word);
-        bmobWord.setBy(by);
-        return bmobWord;
+        return new BmobWord(word, by);
     }
 
+    public static List<Word> list() {
+        return new Select().from(Word.class).execute();
+    }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "id='" + id + '\'' +
+                ", word='" + word + '\'' +
+                ", by='" + by + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updateAt='" + updateAt + '\'' +
+                '}';
+    }
 }
