@@ -24,30 +24,26 @@ public class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTranslucentStatus(true);
+        setTranslucentStatus(true);
         SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintColor(Color.parseColor("#2196F3"));
-        Slidr.attach(this);
+//        SlidrConfig config = new SlidrConfig.Builder()
+//                .position(SlidrPosition.TOP)
+//                .primaryColor(Color.parseColor("#2196F3"))
+//                .secondaryColor(Color.parseColor("#2196F3"))
+//                .build();
+//        Slidr.attach(this, config);
     }
 
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void setTranslucentStatus(boolean on) {
-        Window win = getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         if (on) {
-            winParams.flags |= bits;
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         } else {
-            winParams.flags &= ~bits;
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-        win.setAttributes(winParams);
-//        if (on) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        } else {
-//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
     }
 
 }

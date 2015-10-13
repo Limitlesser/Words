@@ -73,7 +73,7 @@ public class ApiImpl implements Api {
                 }
                 return words;
             }
-        }).observeOn(Schedulers.io());
+        });
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ApiImpl implements Api {
                     e.printStackTrace();
                 }
             }
-        }).observeOn(Schedulers.io());
+        });
 
     }
 
