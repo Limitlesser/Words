@@ -3,6 +3,7 @@ package wind.words.model.api;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class ApiImpl implements Api {
         }).map(new Func1<List<BmobWord>, List<Word>>() {
             @Override
             public List<Word> call(List<BmobWord> bmobWords) {
+                new Delete().from(Word.class).execute();
                 List<Word> words = new ArrayList<>();
                 try {
                     ActiveAndroid.beginTransaction();
