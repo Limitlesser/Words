@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new WordsAdapter();
         binding.recyclerView.setAdapter(mAdapter);
-        binding.ptrFrame.setKeepHeaderWhenRefresh(true);
+
         StoreHouseHeader header = new StoreHouseHeader(this);
         header.setPadding(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics()), 0, 0);
         header.initWithString("Words");
@@ -65,13 +65,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                 getWords();
             }
         });
-        // the following are default settings
-        binding.ptrFrame.setResistance(1.7f);
-        binding.ptrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
-        binding.ptrFrame.setDurationToClose(200);
-        binding.ptrFrame.setDurationToCloseHeader(1000);
-        binding.ptrFrame.setPullToRefresh(false);
-        binding.ptrFrame.autoRefresh();
+        binding.ptrFrame.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.ptrFrame.autoRefresh();
+            }
+        });
     }
 
     private void getWords() {

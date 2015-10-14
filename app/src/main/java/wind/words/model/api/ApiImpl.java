@@ -33,7 +33,6 @@ public class ApiImpl implements Api {
         return Observable.create(new Observable.OnSubscribe<List<BmobWord>>() {
             @Override
             public void call(final Subscriber<? super List<BmobWord>> subscriber) {
-                final CountDownLatch latch = new CountDownLatch(1);
                 BmobQuery<BmobWord> query = new BmobQuery<>();
                 query.findObjects(WordsApp.getContext(), new FindListener<BmobWord>() {
                             @Override
@@ -41,21 +40,14 @@ public class ApiImpl implements Api {
                                 Log.i(TAG, "bmobWords:" + list);
                                 subscriber.onNext(list);
                                 subscriber.onCompleted();
-                                latch.countDown();
                             }
 
                             @Override
                             public void onError(int i, String s) {
                                 subscriber.onError(new ApiError(i, s));
-                                latch.countDown();
                             }
                         }
                 );
-                try {
-                    latch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }).map(new Func1<List<BmobWord>, List<Word>>() {
             @Override
@@ -83,7 +75,6 @@ public class ApiImpl implements Api {
         return Observable.create(new Observable.OnSubscribe<Word>() {
             @Override
             public void call(final Subscriber<? super Word> subscriber) {
-                final CountDownLatch latch = new CountDownLatch(1);
                 final BmobWord bmobWord = new BmobWord(word, by);
                 bmobWord.save(WordsApp.getContext(), new SaveListener() {
                     @Override
@@ -92,20 +83,13 @@ public class ApiImpl implements Api {
                         word.save();
                         subscriber.onNext(word);
                         subscriber.onCompleted();
-                        latch.countDown();
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
                         subscriber.onError(new ApiError(i, s));
-                        latch.countDown();
                     }
                 });
-                try {
-                    latch.await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
